@@ -28,8 +28,8 @@ android {
 }
 
 dependencies {
-    def life_cycle_version = "2.1.0"
-    def room_version = "2.2.2"
+    def life_cycle_version = "2.2.0"
+    def room_version = "2.2.3"
     def koin_version = "2.0.1"
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
@@ -42,7 +42,7 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$life_cycle_version"
     implementation "androidx.lifecycle:lifecycle-extensions:$life_cycle_version"
     kapt "androidx.lifecycle:lifecycle-compiler:$life_cycle_version" // For Kotlin use kapt instead of annotationProcessor
-    implementation "androidx.activity:activity-ktx:1.1.0-rc02"
+    implementation "androidx.activity:activity-ktx:1.1.0"
 
     // Room
     implementation "androidx.room:room-runtime:$room_version"
