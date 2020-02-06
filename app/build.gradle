@@ -12,6 +12,7 @@ android {
         targetSdkVersion 29
         versionCode 1
         versionName "1.0"
+        vectorDrawables.useSupportLibrary = true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -25,6 +26,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+    sourceSets { main { assets.srcDirs = ['src/main/assets', 'src/main/assets/'] } }
 }
 
 dependencies {
@@ -41,7 +43,8 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:$life_cycle_version"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$life_cycle_version"
     implementation "androidx.lifecycle:lifecycle-extensions:$life_cycle_version"
-    kapt "androidx.lifecycle:lifecycle-compiler:$life_cycle_version" // For Kotlin use kapt instead of annotationProcessor
+    kapt "androidx.lifecycle:lifecycle-compiler:$life_cycle_version"
+    // For Kotlin use kapt instead of annotationProcessor
     implementation "androidx.activity:activity-ktx:1.1.0"
 
     // Room

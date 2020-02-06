@@ -1,8 +1,10 @@
 package com.example.android.ecommerce.model
 
 import android.os.Parcelable
+import androidx.room.Entity
 import com.google.gson.annotations.SerializedName
 import kotlinx.android.parcel.Parcelize
+
 
 @Parcelize
 data class Tax(@SerializedName("name")

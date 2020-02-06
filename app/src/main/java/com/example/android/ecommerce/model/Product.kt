@@ -2,9 +2,11 @@ package com.example.android.ecommerce.model
 
 import android.annotation.SuppressLint
 import android.os.Parcelable
+import androidx.room.Entity
 import com.google.gson.annotations.SerializedName
 import kotlinx.android.parcel.Parcelize
 
+@Entity
 @SuppressLint("ParcelCreator")
 @Parcelize
 data class Product(@SerializedName("date_added")

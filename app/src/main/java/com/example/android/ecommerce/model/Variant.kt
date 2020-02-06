@@ -12,4 +12,4 @@ data class Variant(@SerializedName("color")
                    @SerializedName("price")
                         var price: Int = 0,
                    @SerializedName("id")
-                        var id: Int = 0) : Parcelable
+                        var id: Long = 0) : Parcelable
