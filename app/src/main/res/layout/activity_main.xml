@@ -37,6 +37,7 @@
                 android:layout_height="wrap_content"
                 android:padding="@dimen/dim_app_view_space"
                 android:clickable="true"
+                android:background="?selectableItemBackground"
                 android:layout_alignParentBottom="true"
                 >
 
