@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.lifecycle.MutableLiveData
 import com.example.android.ecommerce.base.BaseViewModel
 import com.example.android.ecommerce.model.Category
+import com.example.android.ecommerce.model.Product
 import com.example.android.ecommerce.repository.Repository
 import org.koin.core.KoinComponent
 import org.koin.core.inject
@@ -20,5 +21,9 @@ class ActivityMainViewModel : BaseViewModel(), KoinComponent {
 
     fun getCategoriesByIds(idList: ArrayList<Long>): List<Category>{
         return repository.getCategoriesByIds(idList)
+    }
+
+    fun getProductsByParentId(parentId: Long): List<Product?>?{
+        return repository.getProductsByParentId(parentId)
     }
 }

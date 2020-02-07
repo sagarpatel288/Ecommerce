@@ -3,6 +3,7 @@ package com.example.android.ecommerce.repository
 import android.content.Context
 import com.example.android.ecommerce.apputils.AppUtils
 import com.example.android.ecommerce.model.Category
+import com.example.android.ecommerce.model.Product
 import com.example.android.ecommerce.model.Ranking
 import com.example.android.ecommerce.model.Response
 import com.example.android.ecommerce.utils.FileUtils
@@ -31,6 +32,15 @@ class Repository : KoinComponent {
             val rankingList: List<Ranking?>? = response.rankings
             categoryDao.insertList(categoryList)
             rankingDao.insertList(rankingList)
+            val productList: ArrayList<Product?>? = ArrayList<Product?>()
+
+            categoryList?.forEach { category ->
+                category?.products?.let { products ->
+                    productList?.addAll(products)
+                }
+            }
+
+            productDao.insertList(productList)
         }
 
         // comment by srdpatel: 2/7/2020 Null cannot be cast to Non-Null
@@ -58,6 +68,10 @@ class Repository : KoinComponent {
 
     fun getCategoriesByIds(idList: List<Long>): List<Category> {
         return categoryDao.getCategoryListByIds(idList)
+    }
+
+    fun getProductsByParentId(parentId: Long): List<Product?>? {
+        return productDao.getProductsByParentId(parentId)
     }
 }
 

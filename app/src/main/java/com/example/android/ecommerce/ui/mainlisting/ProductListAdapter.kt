@@ -10,14 +10,14 @@ import com.example.android.ecommerce.R
 import com.example.android.ecommerce.constants.PARCEL
 import com.example.android.ecommerce.databinding.ItemListBinding
 import com.example.android.ecommerce.listeners.Callbacks
-import com.example.android.ecommerce.model.Category
+import com.example.android.ecommerce.model.Product
 
-open class CategoryListAdapter(private val context: Activity, private var mList: List<Category>, private val _onEventCallback : Callbacks.Callback?) :
+class ProductListAdapter(private val context: Activity, private var mList: List<Product?>?, private val _onEventCallback : Callbacks.Callback?) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     val onEventCallback: Callbacks.Callback? = _onEventCallback
 
-    fun setList(mList: List<Category>) {
+    fun setList(mList: List<Product>) {
         this.mList = mList
         notifyDataSetChanged()
     }
@@ -30,12 +30,14 @@ open class CategoryListAdapter(private val context: Activity, private var mList:
     }
 
     override fun getItemCount(): Int {
-        return mList.size
+        return mList?.size ?:0
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (holder is ItemViewHolder){
-            holder.binding.itemTvTitle.text = mList[position].name
+            if (!mList.isNullOrEmpty()) {
+                holder.binding.itemTvTitle.text = mList?.let { mList -> mList[position]?.name }
+            }
         }
     }
 
@@ -51,9 +53,9 @@ open class CategoryListAdapter(private val context: Activity, private var mList:
 
         override fun onClick(view: View?) {
             val position: Int = adapterPosition
-            val category: Category? = mList[position]
+            val product: Product? = mList?.let { mList -> mList[position] }
             val intent = Intent()
-            intent.putExtra(PARCEL, category)
+            intent.putExtra(PARCEL, product)
             onEventCallback?.onEventCallBack(intent)
         }
     }

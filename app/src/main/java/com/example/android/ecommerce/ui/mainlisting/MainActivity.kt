@@ -14,6 +14,7 @@ import com.example.android.ecommerce.base.BaseActivity
 import com.example.android.ecommerce.databinding.ActivityMainBinding
 import com.example.android.ecommerce.listeners.Callbacks
 import com.example.android.ecommerce.model.Category
+import com.example.android.ecommerce.model.Product
 import com.example.android.ecommerce.utils.IntentUtils
 import com.example.android.ecommerce.viewmodels.ActivityMainViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialog
@@ -54,6 +55,12 @@ class MainActivity :
         recyclerView?.adapter = categoryListAdapter
     }
 
+    private fun setProductRecyclerView(recyclerView: RecyclerView?, mList: List<Product?>?) {
+        val productListAdapter = ProductListAdapter(this, mList, this)
+        recyclerView?.layoutManager = LinearLayoutManager(this)
+        recyclerView?.adapter = productListAdapter
+    }
+
     override fun onEventCallBack(intent: Intent) {
         if (IntentUtils.hasParcel(intent)) {
             if (IntentUtils.getParcel<Category>(intent) is Category) {
@@ -66,6 +73,12 @@ class MainActivity :
                         LayoutInflater.from(this).inflate(R.layout.bottom_sheet_dialog, null),
                         viewModel.getCategoriesByIds(category.childCategories as ArrayList<Long>)
                     )
+                } else {
+                    showProductDialog(
+                        this,
+                        LayoutInflater.from(this).inflate(R.layout.product_sheet_dialog, null),
+                        viewModel.getProductsByParentId(category.id)
+                        )
                 }
             }
         }
@@ -75,6 +88,13 @@ class MainActivity :
         val bottomSheetDialog = BottomSheetDialog(context)
         bottomSheetDialog.setContentView(view)
         setRecyclerView(view.findViewById(R.id.rv_category_list), mList)
+        bottomSheetDialog.show()
+    }
+
+    fun showProductDialog(context: Context, view: View, mList: List<Product?>?) {
+        val bottomSheetDialog = BottomSheetDialog(context)
+        bottomSheetDialog.setContentView(view)
+        setProductRecyclerView(view.findViewById(R.id.rv_category_list), mList)
         bottomSheetDialog.show()
     }
 }
