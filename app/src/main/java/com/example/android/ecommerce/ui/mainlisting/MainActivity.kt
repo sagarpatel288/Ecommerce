@@ -100,7 +100,7 @@ class MainActivity :
                 )
             } else if (IntentUtils.getParcel<Variant>(intent) is Variant){
                 val variant: Variant = IntentUtils.getParcel<Variant>(intent) as Variant
-                Toast.makeText(this, variant.size, Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "" + variant.size, Toast.LENGTH_SHORT).show()
                 detail.variant = variant
                 startActivity(IntentUtils.getIntentWithParcel(this, detail, DetailActivity::class.java))
             }
