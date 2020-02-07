@@ -30,13 +30,13 @@ class MainActivity :
     override val viewModel: ActivityMainViewModel by viewModel()
     private var categoryListAdapter: CategoryListAdapter? = null
     private val detail = Detail(null, null, null)
-    private val sortBy = SortBy("Category")
 
     override fun dataBinding(dataBinding: ViewDataBinding) {
         this.dataBinding = dataBinding as? ActivityMainBinding
     }
 
     override fun otherStuffs() {
+
         dataBinding?.viewSortBy?.setOnClickListener { _ ->
             showSortByDialog(
                 ViewUtils.getView(
@@ -45,7 +45,6 @@ class MainActivity :
                 )
             )
         }
-        setSortBy(sortBy)
         setRecyclerView(dataBinding?.rvCategoryList, arrayListOf())
         setObservers()
     }
@@ -61,28 +60,27 @@ class MainActivity :
     }
 
     private fun setSortBy(sortBy: SortBy) {
-        dataBinding?.itemTvSortByValue?.text = sortBy.name
+
         if (sortBy.name?.toLowerCase(Locale.getDefault())?.contains("viewed") == true) {
-            viewModel.sortByViewed(this)
+            setProductList(viewModel.sortByViewed(this).value)
         } else if (sortBy.name?.toLowerCase(Locale.getDefault())?.contains("ordered") == true) {
-            viewModel.sortByOrdered(this)
+            setProductList(viewModel.sortByOrdered(this).value)
         } else if (sortBy.name?.toLowerCase(Locale.getDefault())?.contains("shared") == true) {
-            viewModel.sortByShared(this)
+            setProductList(viewModel.sortByShared(this).value)
         } else if (sortBy.name?.toLowerCase(Locale.getDefault())?.contains("category") == true) {
-            viewModel.sortByCategory(this)
+            setCategoryList(viewModel.sortByCategory(this).value)
         }
     }
 
     private fun setObservers() {
-        viewModel.getParentCategories(this).observe(this, Observer { renderListData(it) })
-        viewModel.getProductList(this).observe(this, Observer { setProductList(it) })
+        viewModel.getSortByOption().observe(this, Observer { setSortBy(it) })
     }
 
     private fun setProductList(productList: List<Product>?) {
         setProductRecyclerView(dataBinding?.rvCategoryList, productList)
     }
 
-    private fun renderListData(mutableCategoryList: List<Category>?) {
+    private fun setCategoryList(mutableCategoryList: List<Category>?) {
         setRecyclerView(dataBinding?.rvCategoryList, mutableCategoryList ?: mutableListOf())
         if (!mutableCategoryList.isNullOrEmpty()) {
             categoryListAdapter?.setList(mutableCategoryList)
@@ -159,6 +157,7 @@ class MainActivity :
             } else if (IntentUtils.getParcel<SortBy>(intent) is SortBy) {
                 val sortBy: SortBy = IntentUtils.getParcel<SortBy>(intent) as SortBy
                 Toast.makeText(this, "" + sortBy.name, Toast.LENGTH_SHORT).show()
+                dataBinding?.itemTvSortByValue?.text = sortBy.name
                 setSortBy(sortBy)
             }
         }
