@@ -137,6 +137,7 @@ class MainActivity :
                 val product: Product = IntentUtils.getParcel<Product>(intent) as Product
                 Toast.makeText(this, product.name, Toast.LENGTH_SHORT).show()
                 detail.product = product
+                detail.category = viewModel.getCategoriesByIds(listOf(product.parentId ?: -1))[0]
                 showVariantDialog(
                     this,
                     LayoutInflater.from(this).inflate(R.layout.variant_sheet_dialog, null),
