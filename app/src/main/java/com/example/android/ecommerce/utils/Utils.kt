@@ -1,6 +1,5 @@
 package com.example.android.ecommerce.utils
 
-import android.view.View
 import com.google.gson.Gson
 import com.google.gson.JsonObject
 import com.google.gson.internal.LinkedTreeMap
@@ -39,6 +38,27 @@ class Utils {
         fun toJsonString(jsonObject: JsonObject): String {
             val gson = Gson()
             return gson.toJson(jsonObject)
+        }
+
+        @JvmStatic
+        fun <T> getNullOrJsonString(collection: List<T?>?): String? {
+            if (collection.isNullOrEmpty()) {
+                return null
+            }
+            return Gson().toJson(collection)
+        }
+
+        @JvmStatic
+        fun <T> getNullOrList(data: String?, classOfObject: Class<T>): List<T?>? {
+            if (StringUtils.isNullOrEmpty(data)) {
+                return null //Because we want to check in query! Collections.emptyList()
+            }
+            return Gson().fromJson(data, getListTypeToken(classOfObject))
+        }
+
+        @JvmStatic
+        fun <T> getListTypeToken(classOfObject: Class<T>): Type {
+            return TypeToken.getParameterized(ArrayList::class.java, classOfObject).type
         }
     }
 }

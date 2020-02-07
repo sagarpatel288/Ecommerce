@@ -12,7 +12,7 @@ class ProductListTypeConverter {
     val gson = Gson()
 
     @TypeConverter
-    fun stringToProductList(data: String?): MutableList<Product?>? {
+    fun stringToProductList(data: String?): List<Product?>? {
         if (data == null) {
             return null //Because we want to check in query! Collections.emptyList()
         }

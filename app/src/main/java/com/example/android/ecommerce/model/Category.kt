@@ -16,7 +16,7 @@ import kotlinx.android.parcel.Parcelize
 data class Category(
     @TypeConverters(ChildCategoryListTypeConverter::class)
     @SerializedName("child_categories")
-    var childCategories: MutableList<Long?>? = null,
+    var childCategories: MutableList<Int?>? = null,
     @SerializedName("id")
     @PrimaryKey (autoGenerate = true)
     var id: Long = 0, // 13
