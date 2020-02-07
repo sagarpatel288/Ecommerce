@@ -15,6 +15,7 @@ import com.example.android.ecommerce.databinding.ActivityMainBinding
 import com.example.android.ecommerce.listeners.Callbacks
 import com.example.android.ecommerce.model.Category
 import com.example.android.ecommerce.model.Product
+import com.example.android.ecommerce.model.Variant
 import com.example.android.ecommerce.utils.IntentUtils
 import com.example.android.ecommerce.viewmodels.ActivityMainViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialog
@@ -61,6 +62,12 @@ class MainActivity :
         recyclerView?.adapter = productListAdapter
     }
 
+    private fun setVariantRecyclerView(recyclerView: RecyclerView?, mList: List<Variant?>?) {
+        val variantListAdapter = VariantListAdapter(this, mList, this)
+        recyclerView?.layoutManager = LinearLayoutManager(this)
+        recyclerView?.adapter = variantListAdapter
+    }
+
     override fun onEventCallBack(intent: Intent) {
         if (IntentUtils.hasParcel(intent)) {
             if (IntentUtils.getParcel<Category>(intent) is Category) {
@@ -78,8 +85,16 @@ class MainActivity :
                         this,
                         LayoutInflater.from(this).inflate(R.layout.product_sheet_dialog, null),
                         viewModel.getProductsByParentId(category.id)
-                        )
+                    )
                 }
+            } else if (IntentUtils.getParcel<Product>(intent) is Product) {
+                val product: Product = IntentUtils.getParcel<Product>(intent) as Product
+                Toast.makeText(this, product.name, Toast.LENGTH_SHORT).show()
+                showVariantDialog(
+                    this,
+                    LayoutInflater.from(this).inflate(R.layout.variant_sheet_dialog, null),
+                    product.variants
+                )
             }
         }
     }
@@ -95,6 +110,13 @@ class MainActivity :
         val bottomSheetDialog = BottomSheetDialog(context)
         bottomSheetDialog.setContentView(view)
         setProductRecyclerView(view.findViewById(R.id.rv_category_list), mList)
+        bottomSheetDialog.show()
+    }
+
+    fun showVariantDialog(context: Context, view: View, mList: List<Variant?>?) {
+        val bottomSheetDialog = BottomSheetDialog(context)
+        bottomSheetDialog.setContentView(view)
+        setVariantRecyclerView(view.findViewById(R.id.rv_category_list), mList)
         bottomSheetDialog.show()
     }
 }

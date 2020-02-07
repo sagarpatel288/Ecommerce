@@ -2,11 +2,8 @@ package com.example.android.ecommerce.model
 
 import android.annotation.SuppressLint
 import android.os.Parcelable
-import androidx.room.Entity
-import androidx.room.ForeignKey
+import androidx.room.*
 import androidx.room.ForeignKey.SET_DEFAULT
-import androidx.room.PrimaryKey
-import androidx.room.TypeConverters
 import com.example.android.ecommerce.typeconverters.TaxTypeConverter
 import com.example.android.ecommerce.typeconverters.VariantListTypeConverter
 import com.google.gson.annotations.SerializedName
@@ -14,13 +11,15 @@ import kotlinx.android.parcel.Parcelize
 
 @Entity
     (
-    foreignKeys = [
+    foreignKeys =
+    [
         ForeignKey(
             entity = Category::class,
             parentColumns = ["id"],
             childColumns = ["parentId"],
             onDelete = SET_DEFAULT
-        )]
+        )
+    ],  indices = [Index(value = ["parentId", "id"])]
 )
 @SuppressLint("ParcelCreator")
 @Parcelize
