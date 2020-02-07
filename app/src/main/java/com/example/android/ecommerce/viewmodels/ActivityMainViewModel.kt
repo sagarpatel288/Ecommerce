@@ -9,6 +9,7 @@ import com.example.android.ecommerce.model.SortBy
 import com.example.android.ecommerce.repository.Repository
 import org.koin.core.KoinComponent
 import org.koin.core.inject
+import java.util.*
 
 class ActivityMainViewModel : BaseViewModel(), KoinComponent {
     private val repository: Repository by inject()
@@ -16,10 +17,11 @@ class ActivityMainViewModel : BaseViewModel(), KoinComponent {
     val productList = MutableLiveData<List<Product>>()
     val sortBy = MutableLiveData<SortBy>()
 
-
     fun getSortByOption(): MutableLiveData<SortBy> {
-        val sortByOption = SortBy("Category")
-        sortBy.value = sortByOption
+        if (sortBy.value?.name.isNullOrEmpty()){
+            val sortByOption = SortBy("Category")
+            sortBy.value = sortByOption
+        }
         return sortBy
     }
 
@@ -45,39 +47,54 @@ class ActivityMainViewModel : BaseViewModel(), KoinComponent {
         return repository.getSortByOptionList()
     }
 
-    fun sortByViewed(context: Context): MutableLiveData<List<Product>> {
+    fun sortByViewed(sortBy: SortBy): MutableLiveData<List<Product>> {
         val products = repository.getProductListByViews()
         productList.value = products
-        if (!sortBy.value?.name.toString().contains("viewed")){
-            sortBy.value = SortBy("viewed")
+        if (!this.sortBy.value?.name.toString().toLowerCase().contains("viewed")){
+            this.sortBy.value = sortBy
         }
         return productList
     }
 
-    fun sortByOrdered(context: Context): MutableLiveData<List<Product>> {
+    fun sortByOrdered(sortBy: SortBy): MutableLiveData<List<Product>> {
         val products = repository.getProductListByOrder()
         productList.value = products
-        if (!sortBy.value?.name.toString().contains("ordered")){
-            sortBy.value = SortBy("ordered")
+        if (!this.sortBy.value?.name.toString().toLowerCase().contains("ordered")){
+            this.sortBy.value = sortBy
         }
         return productList
     }
 
-    fun sortByShared(context: Context): MutableLiveData<List<Product>> {
+    fun sortByShared(sortBy: SortBy): MutableLiveData<List<Product>> {
         val products = repository.getProductListBySharings()
         productList.value = products
-        if (!sortBy.value?.name.toString().contains("shared")){
-            sortBy.value = SortBy("shared")
+        if (!this.sortBy.value?.name.toString().toLowerCase().contains("shared")){
+            this.sortBy.value = sortBy
         }
         return productList
     }
 
-    fun sortByCategory(context: Context): MutableLiveData<List<Category>> {
+    fun sortByCategory(
+        context: Context,
+        sortBy: SortBy
+    ): MutableLiveData<List<Category>> {
         val superParents = repository.getParentCategories(context)
         superParentCategoryList.value = superParents
-        if (!sortBy.value?.name.toString().contains("category")){
-            sortBy.value = SortBy("category")
+        if (!this.sortBy.value?.name.toString().toLowerCase().contains("category")){
+            this.sortBy.value = sortBy
         }
         return superParentCategoryList
+    }
+
+    fun setSortBy(context: Context, sortBy: SortBy) {
+        if (sortBy.name?.toLowerCase(Locale.getDefault())?.contains("viewed") == true) {
+            sortByViewed(sortBy)
+        } else if (sortBy.name?.toLowerCase(Locale.getDefault())?.contains("ordered") == true) {
+            sortByOrdered(sortBy)
+        } else if (sortBy.name?.toLowerCase(Locale.getDefault())?.contains("shared") == true) {
+            sortByShared(sortBy)
+        } else if (sortBy.name?.toLowerCase(Locale.getDefault())?.contains("category") == true) {
+            sortByCategory(context, sortBy)
+        }
     }
 }

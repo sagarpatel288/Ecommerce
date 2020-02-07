@@ -36,7 +36,7 @@ class MainActivity :
     }
 
     override fun otherStuffs() {
-
+        dataBinding?.itemTvSortByValue?.text = viewModel.getSortByOption().value?.name
         dataBinding?.viewSortBy?.setOnClickListener { _ ->
             showSortByDialog(
                 ViewUtils.getView(
@@ -60,15 +60,14 @@ class MainActivity :
     }
 
     private fun setSortBy(sortBy: SortBy) {
-
         if (sortBy.name?.toLowerCase(Locale.getDefault())?.contains("viewed") == true) {
-            setProductList(viewModel.sortByViewed(this).value)
+            setProductList(viewModel.sortByViewed(sortBy).value)
         } else if (sortBy.name?.toLowerCase(Locale.getDefault())?.contains("ordered") == true) {
-            setProductList(viewModel.sortByOrdered(this).value)
+            setProductList(viewModel.sortByOrdered(sortBy).value)
         } else if (sortBy.name?.toLowerCase(Locale.getDefault())?.contains("shared") == true) {
-            setProductList(viewModel.sortByShared(this).value)
+            setProductList(viewModel.sortByShared(sortBy).value)
         } else if (sortBy.name?.toLowerCase(Locale.getDefault())?.contains("category") == true) {
-            setCategoryList(viewModel.sortByCategory(this).value)
+            setCategoryList(viewModel.sortByCategory(this, sortBy).value)
         }
     }
 
@@ -157,10 +156,14 @@ class MainActivity :
             } else if (IntentUtils.getParcel<SortBy>(intent) is SortBy) {
                 val sortBy: SortBy = IntentUtils.getParcel<SortBy>(intent) as SortBy
                 Toast.makeText(this, "" + sortBy.name, Toast.LENGTH_SHORT).show()
-                dataBinding?.itemTvSortByValue?.text = sortBy.name
-                setSortBy(sortBy)
+                onSelectSortBy(sortBy)
             }
         }
+    }
+
+    private fun onSelectSortBy(sortBy: SortBy) {
+        dataBinding?.itemTvSortByValue?.text = sortBy.name
+        viewModel.setSortBy(this, sortBy)
     }
 
     private fun showBottomSheetDialog(context: Context, view: View, mList: List<Category>) {
