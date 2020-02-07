@@ -36,6 +36,11 @@ class Repository : KoinComponent {
 
             categoryList?.forEach { category ->
                 category?.products?.let { products ->
+
+                    products.forEach{product ->
+                        product?.parentId = category.id
+                    }
+
                     productList?.addAll(products)
                 }
             }
