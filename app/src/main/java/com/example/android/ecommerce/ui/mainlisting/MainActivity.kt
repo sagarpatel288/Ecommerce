@@ -14,8 +14,10 @@ import com.example.android.ecommerce.base.BaseActivity
 import com.example.android.ecommerce.databinding.ActivityMainBinding
 import com.example.android.ecommerce.listeners.Callbacks
 import com.example.android.ecommerce.model.Category
+import com.example.android.ecommerce.model.Detail
 import com.example.android.ecommerce.model.Product
 import com.example.android.ecommerce.model.Variant
+import com.example.android.ecommerce.ui.mainlisting.detail.DetailActivity
 import com.example.android.ecommerce.utils.IntentUtils
 import com.example.android.ecommerce.viewmodels.ActivityMainViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialog
@@ -26,10 +28,9 @@ class MainActivity :
     Callbacks.Callback {
 
     private var dataBinding: ActivityMainBinding? = null
-
     override val viewModel: ActivityMainViewModel by viewModel()
     private var categoryListAdapter: CategoryListAdapter? = null
-
+    private val detail = Detail(null, null, null)
 
     override fun dataBinding(dataBinding: ViewDataBinding) {
         this.dataBinding = dataBinding as? ActivityMainBinding
@@ -72,6 +73,7 @@ class MainActivity :
         if (IntentUtils.hasParcel(intent)) {
             if (IntentUtils.getParcel<Category>(intent) is Category) {
                 val category: Category = IntentUtils.getParcel<Category>(intent) as Category
+                detail.category = category
                 Toast.makeText(this, category.name, Toast.LENGTH_SHORT).show()
                 if (!category.childCategories.isNullOrEmpty()) {
                     // comment by srdpatel: 2/7/2020 There are still some child categories
@@ -90,11 +92,17 @@ class MainActivity :
             } else if (IntentUtils.getParcel<Product>(intent) is Product) {
                 val product: Product = IntentUtils.getParcel<Product>(intent) as Product
                 Toast.makeText(this, product.name, Toast.LENGTH_SHORT).show()
+                detail.product = product
                 showVariantDialog(
                     this,
                     LayoutInflater.from(this).inflate(R.layout.variant_sheet_dialog, null),
                     product.variants
                 )
+            } else if (IntentUtils.getParcel<Variant>(intent) is Variant){
+                val variant: Variant = IntentUtils.getParcel<Variant>(intent) as Variant
+                Toast.makeText(this, variant.size, Toast.LENGTH_SHORT).show()
+                detail.variant = variant
+                startActivity(IntentUtils.getIntentWithParcel(this, detail, DetailActivity::class.java))
             }
         }
     }

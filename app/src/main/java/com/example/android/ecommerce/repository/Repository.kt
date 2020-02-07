@@ -75,6 +75,10 @@ class Repository : KoinComponent {
         return categoryDao.getCategoryListByIds(idList)
     }
 
+    fun getCategoryById(id: Long): Category? {
+        return categoryDao.getCategoryById(id)
+    }
+
     fun getProductsByParentId(parentId: Long): List<Product?>? {
         return productDao.getProductsByParentId(parentId)
     }

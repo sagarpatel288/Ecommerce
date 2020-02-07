@@ -46,7 +46,7 @@ open class CategoryListAdapter(private val context: Activity, private var mList:
         RecyclerView.ViewHolder(itemView), View.OnClickListener {
 
         init {
-            binding.itemTvTitle.setOnClickListener(this)
+            itemView.setOnClickListener(this)
         }
 
         override fun onClick(view: View?) {
