@@ -1,7 +1,8 @@
 package com.example.android.ecommerce.repository
 
 import android.content.Context
-import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.LiveData
+import com.example.android.ecommerce.apputils.AppUtils
 import com.example.android.ecommerce.model.Category
 import com.example.android.ecommerce.model.Ranking
 import com.example.android.ecommerce.model.Response
@@ -22,8 +23,8 @@ class Repository: KoinComponent {
         categoryDao.insertList(categoryList)
     }
 
-    fun getParentCategories(context: Context): MutableLiveData<ArrayList<Category>?>?{
-        if (!categoryDao.hasCategory()){
+    fun getParentCategories(context: Context): LiveData<List<Category>?>?{
+        if (!AppUtils.hasCategory(categoryDao)){
             val jsonString: String = FileUtils.getJsonFromAsset(context, "ecommerce.json")
             val response : Response = Utils.toObject(jsonString, Response(), Response::class.java)
             val categoryList: List<Category?>? = response.categories

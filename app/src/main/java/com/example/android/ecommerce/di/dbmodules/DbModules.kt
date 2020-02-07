@@ -31,6 +31,6 @@ val dbModule = module {
     }
 
     single {
-        Repository(androidApplication())
+        Repository()
     }
 }

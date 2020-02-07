@@ -12,12 +12,12 @@ import com.example.android.ecommerce.databinding.ItemListBinding
 import com.example.android.ecommerce.listeners.Callbacks
 import com.example.android.ecommerce.model.Category
 
-class CategoryListAdapter(private val context: Activity, private var mList: MutableList<Category>, private val _onEventCallback : Callbacks.Callback?) :
+class CategoryListAdapter(private val context: Activity, private var mList: List<Category>, private val _onEventCallback : Callbacks.Callback?) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     val onEventCallback: Callbacks.Callback? = _onEventCallback
 
-    fun setList(mList: ArrayList<Category>) {
+    fun setList(mList: List<Category>) {
         this.mList = mList
         notifyDataSetChanged()
     }

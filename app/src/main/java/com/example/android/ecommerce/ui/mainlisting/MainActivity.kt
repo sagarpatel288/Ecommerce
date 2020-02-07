@@ -35,7 +35,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, ActivityMainViewModel> (R
         viewModel.getParentCategories(this)?.observe(this, Observer { renderListData(it) })
     }
 
-    private fun renderListData(mutableCategoryList: ArrayList<Category>?) {
+    private fun renderListData(mutableCategoryList: List<Category>?) {
         if (mutableCategoryList != null){
             categoryListAdapter?.setList(mutableCategoryList)
         }

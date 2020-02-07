@@ -5,7 +5,7 @@ import android.os.Parcelable
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import androidx.room.TypeConverters
-import com.example.android.ecommerce.typeconverters.CategoryListTypeConverter
+import com.example.android.ecommerce.typeconverters.ChildCategoryListTypeConverter
 import com.example.android.ecommerce.typeconverters.ProductListTypeConverter
 import com.google.gson.annotations.SerializedName
 import kotlinx.android.parcel.Parcelize
@@ -14,9 +14,9 @@ import kotlinx.android.parcel.Parcelize
 @SuppressLint("ParcelCreator")
 @Parcelize
 data class Category(
-    @TypeConverters(CategoryListTypeConverter::class)
+    @TypeConverters(ChildCategoryListTypeConverter::class)
     @SerializedName("child_categories")
-    var childCategories: MutableList<Category?>? = null,
+    var childCategories: MutableList<Long?>? = null,
     @SerializedName("id")
     @PrimaryKey (autoGenerate = true)
     var id: Long = 0, // 13
