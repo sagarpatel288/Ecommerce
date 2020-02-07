@@ -37,7 +37,8 @@ class Repository : KoinComponent {
         val parentCategoryList: List<Category>? =
             categoryDao.getParentCategories()
 
-        val parentIds: ArrayList<Long>? = parentCategoryList?.map { it.id }?.toMutableList() as ArrayList<Long>?
+        val parentIds: ArrayList<Long>? =
+            parentCategoryList?.map { it.id }?.toMutableList() as ArrayList<Long>?
 
         val childrenIds = arrayListOf<Long>()
 
@@ -48,7 +49,15 @@ class Repository : KoinComponent {
 
         parentIds?.removeAll(childrenIds)
 
-        return categoryDao.getCategoryListByIds(parentIds!!)
+        return getCategoriesByIds(parentIds!!)
+    }
+
+    fun getIdsFromCategoryList(categoryList: ArrayList<Category>): ArrayList<Long>? {
+        return categoryList.map { it.id }.toMutableList() as ArrayList<Long>
+    }
+
+    fun getCategoriesByIds(idList: List<Long>): List<Category> {
+        return categoryDao.getCategoryListByIds(idList)
     }
 }
 

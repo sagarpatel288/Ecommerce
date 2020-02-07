@@ -28,4 +28,6 @@ interface CategoryDao : BaseDao<Category> {
 
     @Query("select * from Category where id IN(:ids)")
     fun getCategoryListByIds(ids: List<Long>): List<Category>
+
+
 }

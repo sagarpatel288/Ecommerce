@@ -17,4 +17,8 @@ class ActivityMainViewModel : BaseViewModel(), KoinComponent {
         superParentCategoryList.value = superParents
         return superParentCategoryList
     }
+
+    fun getCategoriesByIds(idList: ArrayList<Long>): List<Category>{
+        return repository.getCategoriesByIds(idList)
+    }
 }

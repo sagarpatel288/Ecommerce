@@ -3,15 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <data>
-
-            <variable
-                name="viewModel"
-                type="com.example.android.ecommerce.viewmodels.ActivityMainViewModel" />
-
-    </data>
-
-
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
