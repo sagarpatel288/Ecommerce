@@ -6,9 +6,11 @@ import com.example.android.ecommerce.model.Category
 import com.example.android.ecommerce.model.Product
 import com.example.android.kotlin_mvvm_room_koin_coroutine.db.dao.CategoryDao
 import com.example.android.kotlin_mvvm_room_koin_coroutine.db.dao.ProductDao
+import com.example.android.kotlin_mvvm_room_koin_coroutine.db.dao.RankingDao
 
 @Database(entities = [(Category::class), (Product::class)], version = 1, exportSchema = false)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun getCategoryDao(): CategoryDao
     abstract fun getProductDao() : ProductDao
+    abstract fun getRankingDao() : RankingDao
 }

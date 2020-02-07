@@ -47,6 +47,9 @@ dependencies {
     // For Kotlin use kapt instead of annotationProcessor
     implementation "androidx.activity:activity-ktx:1.1.0"
 
+    //Google
+    implementation 'com.google.code.gson:gson:2.8.6'
+
     // Room
     implementation "androidx.room:room-runtime:$room_version"
     kapt "androidx.room:room-compiler:$room_version"

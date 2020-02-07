@@ -7,7 +7,7 @@ import java.io.IOException
 class FileUtils {
     companion object {
         @JvmStatic
-        fun getJsonFromAsset(context: Context, jsonFileNameWithExtension: String) : String? {
+        fun getJsonFromAsset(context: Context, jsonFileNameWithExtension: String) : String {
             var jsonString : String = ""
             // comment by srdpatel: 2/4/2020  https://www.myandroidsolutions.com/2019/07/25/android-parse-json-file-from-assets/#.XjlT6WgzbDc
             try {

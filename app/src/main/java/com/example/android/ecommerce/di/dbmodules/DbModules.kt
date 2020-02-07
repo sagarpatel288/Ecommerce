@@ -24,4 +24,8 @@ val dbModule = module {
     single {
         get<AppDatabase>().getProductDao()
     }
+
+    single {
+        get<AppDatabase>().getRankingDao()
+    }
 }
