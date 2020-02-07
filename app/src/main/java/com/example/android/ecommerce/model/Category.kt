@@ -16,7 +16,7 @@ import kotlinx.android.parcel.Parcelize
 data class Category(
     @TypeConverters(ChildCategoryListTypeConverter::class)
     @SerializedName("child_categories")
-    var childCategories: MutableList<Int?>? = null,
+    var childCategories: List<Long>? = null,
     @SerializedName("id")
     @PrimaryKey (autoGenerate = true)
     var id: Long = 0, // 13
@@ -24,5 +24,5 @@ data class Category(
     var name: String? = null, // Laptops
     @TypeConverters(ProductListTypeConverter::class)
     @SerializedName("products")
-    var products: MutableList<Product?>? = null
+    var products: List<Product?>? = null
 ) : Parcelable

@@ -32,7 +32,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, ActivityMainViewModel> (R
     }
 
     private fun loadData() {
-        viewModel.getParentCategories(this)?.observe(this, Observer { renderListData(it) })
+        viewModel.getParentCategories(this).observe(this, Observer { renderListData(it) })
     }
 
     private fun renderListData(mutableCategoryList: List<Category>?) {

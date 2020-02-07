@@ -1,7 +1,6 @@
 package com.example.android.ecommerce.repository
 
 import android.content.Context
-import androidx.lifecycle.LiveData
 import com.example.android.ecommerce.apputils.AppUtils
 import com.example.android.ecommerce.model.Category
 import com.example.android.ecommerce.model.Ranking
@@ -12,9 +11,10 @@ import com.example.android.kotlin_mvvm_room_koin_coroutine.db.dao.CategoryDao
 import com.example.android.kotlin_mvvm_room_koin_coroutine.db.dao.ProductDao
 import com.example.android.kotlin_mvvm_room_koin_coroutine.db.dao.RankingDao
 import org.koin.core.KoinComponent
+import org.koin.core.get
 import org.koin.core.inject
 
-class Repository: KoinComponent {
+class Repository : KoinComponent {
     private val categoryDao: CategoryDao by inject()
     private val productDao: ProductDao by inject()
     private val rankingDao: RankingDao by inject()
@@ -23,15 +23,32 @@ class Repository: KoinComponent {
         categoryDao.insertList(categoryList)
     }
 
-    fun getParentCategories(context: Context): LiveData<List<Category>?>?{
-        if (!AppUtils.hasCategory(categoryDao)){
+    fun getParentCategories(context: Context): List<Category> {
+        if (!AppUtils.hasCategory(get())) {
             val jsonString: String = FileUtils.getJsonFromAsset(context, "ecommerce.json")
-            val response : Response = Utils.toObject(jsonString, Response(), Response::class.java)
+            val response: Response = Utils.toObject(jsonString, Response(), Response::class.java)
             val categoryList: List<Category?>? = response.categories
             val rankingList: List<Ranking?>? = response.rankings
             categoryDao.insertList(categoryList)
             rankingDao.insertList(rankingList)
         }
-        return categoryDao.getParentCategories()
+
+        // comment by srdpatel: 2/7/2020 Null cannot be cast to Non-Null
+        val parentCategoryList: List<Category>? =
+            categoryDao.getParentCategories()
+
+        val parentIds: ArrayList<Long>? = parentCategoryList?.map { it.id }?.toMutableList() as ArrayList<Long>?
+
+        val childrenIds = arrayListOf<Long>()
+
+        /*https://stackoverflow.com/questions/44595529/smart-cast-to-type-is-impossible-because-variable-is-a-mutable-property-tha*/
+        parentCategoryList?.forEach { category ->
+            category.childCategories?.let { children -> childrenIds.addAll(children) }
+        }
+
+        parentIds?.removeAll(childrenIds)
+
+        return categoryDao.getCategoryListByIds(parentIds!!)
     }
 }
+
