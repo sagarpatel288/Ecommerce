@@ -1,4 +1,4 @@
-package com.example.android.ecommerce.ui.mainlisting.detail
+package com.example.android.ecommerce.ui.detail
 
 import androidx.databinding.ViewDataBinding
 import com.example.android.ecommerce.R

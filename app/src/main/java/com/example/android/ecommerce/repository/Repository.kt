@@ -2,10 +2,7 @@ package com.example.android.ecommerce.repository
 
 import android.content.Context
 import com.example.android.ecommerce.apputils.AppUtils
-import com.example.android.ecommerce.model.Category
-import com.example.android.ecommerce.model.Product
-import com.example.android.ecommerce.model.Ranking
-import com.example.android.ecommerce.model.Response
+import com.example.android.ecommerce.model.*
 import com.example.android.ecommerce.utils.FileUtils
 import com.example.android.ecommerce.utils.Utils
 import com.example.android.kotlin_mvvm_room_koin_coroutine.db.dao.CategoryDao
@@ -14,6 +11,8 @@ import com.example.android.kotlin_mvvm_room_koin_coroutine.db.dao.RankingDao
 import org.koin.core.KoinComponent
 import org.koin.core.get
 import org.koin.core.inject
+import java.util.*
+import kotlin.collections.ArrayList
 
 class Repository : KoinComponent {
     private val categoryDao: CategoryDao by inject()
@@ -37,7 +36,7 @@ class Repository : KoinComponent {
             categoryList?.forEach { category ->
                 category?.products?.let { products ->
 
-                    products.forEach{product ->
+                    products.forEach { product ->
                         product?.parentId = category.id
                     }
 
@@ -81,6 +80,44 @@ class Repository : KoinComponent {
 
     fun getProductsByParentId(parentId: Long): List<Product?>? {
         return productDao.getProductsByParentId(parentId)
+    }
+
+    fun getSortByOptionList(): List<SortBy> {
+        val rankingList = rankingDao.getAllRankings()
+        val sortByOptionList = ArrayList<SortBy>()
+        rankingList.forEach { element -> sortByOptionList.add(SortBy(element.ranking ?: "")) }
+        sortByOptionList.add(0, SortBy("Category"))
+        return sortByOptionList
+    }
+
+    fun getProductListByViews(): List<Product>? {
+        val rankingList = rankingDao.getAllRankings()
+        rankingList.forEach { rank ->
+            if (rank.ranking?.toLowerCase(Locale.getDefault())?.contains("view") == true) {
+                return rank.products
+            }
+        }
+        return null
+    }
+
+    fun getProductListByOrder(): List<Product>? {
+        val rankingList = rankingDao.getAllRankings()
+        rankingList.forEach { rank ->
+            if (rank.ranking?.toLowerCase(Locale.getDefault())?.contains("order") == true) {
+                return rank.products
+            }
+        }
+        return null
+    }
+
+    fun getProductListBySharings(): List<Product>? {
+        val rankingList = rankingDao.getAllRankings()
+        rankingList.forEach { rank ->
+            if (rank.ranking?.toLowerCase(Locale.getDefault())?.contains("share") == true) {
+                return rank.products
+            }
+        }
+        return null
     }
 }
 

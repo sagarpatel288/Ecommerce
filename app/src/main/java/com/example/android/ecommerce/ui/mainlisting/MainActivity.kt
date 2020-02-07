@@ -13,15 +13,14 @@ import com.example.android.ecommerce.R
 import com.example.android.ecommerce.base.BaseActivity
 import com.example.android.ecommerce.databinding.ActivityMainBinding
 import com.example.android.ecommerce.listeners.Callbacks
-import com.example.android.ecommerce.model.Category
-import com.example.android.ecommerce.model.Detail
-import com.example.android.ecommerce.model.Product
-import com.example.android.ecommerce.model.Variant
-import com.example.android.ecommerce.ui.mainlisting.detail.DetailActivity
+import com.example.android.ecommerce.model.*
+import com.example.android.ecommerce.ui.detail.DetailActivity
 import com.example.android.ecommerce.utils.IntentUtils
+import com.example.android.ecommerce.utils.ViewUtils
 import com.example.android.ecommerce.viewmodels.ActivityMainViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import org.koin.android.viewmodel.ext.android.viewModel
+import java.util.*
 
 class MainActivity :
     BaseActivity<ActivityMainBinding, ActivityMainViewModel>(R.layout.activity_main),
@@ -31,18 +30,56 @@ class MainActivity :
     override val viewModel: ActivityMainViewModel by viewModel()
     private var categoryListAdapter: CategoryListAdapter? = null
     private val detail = Detail(null, null, null)
+    private val sortBy = SortBy("Category")
 
     override fun dataBinding(dataBinding: ViewDataBinding) {
         this.dataBinding = dataBinding as? ActivityMainBinding
     }
 
     override fun otherStuffs() {
+        dataBinding?.itemTvSortByValue?.setOnClickListener { _ ->
+            showSortByDialog(
+                ViewUtils.getView(
+                    this,
+                    R.layout.sort_by_sheet_dialog
+                )
+            )
+        }
+        setSortBy(sortBy)
         setRecyclerView(dataBinding?.rvCategoryList, mutableListOf())
-        loadData()
+        setObservers()
     }
 
-    private fun loadData() {
+    private fun showSortByDialog(view: View) {
+        val bottomSheetDialog = BottomSheetDialog(this)
+        bottomSheetDialog.setContentView(view)
+        setSortByRecyclerView(
+            view.findViewById(R.id.rv_category_list),
+            viewModel.getSortByOptionList()
+        )
+        bottomSheetDialog.show()
+    }
+
+    private fun setSortBy(sortBy: SortBy) {
+        dataBinding?.itemTvSortByValue?.text = sortBy.name
+        if (sortBy.name?.toLowerCase(Locale.getDefault())?.contains("viewed") == true) {
+            viewModel.sortByViewed(this)
+        } else if (sortBy.name?.toLowerCase(Locale.getDefault())?.contains("ordered") == true) {
+            viewModel.sortByOrdered(this)
+        } else if (sortBy.name?.toLowerCase(Locale.getDefault())?.contains("shared") == true) {
+            viewModel.sortByShared(this)
+        } else if (sortBy.name?.toLowerCase(Locale.getDefault())?.contains("category") == true) {
+            viewModel.sortByCategory(this)
+        }
+    }
+
+    private fun setObservers() {
         viewModel.getParentCategories(this).observe(this, Observer { renderListData(it) })
+        viewModel.getProductList(this).observe(this, Observer { setProductList(it) })
+    }
+
+    private fun setProductList(productList: List<Product>?) {
+        setProductRecyclerView(dataBinding?.rvCategoryList, productList)
     }
 
     private fun renderListData(mutableCategoryList: List<Category>?) {
@@ -69,6 +106,13 @@ class MainActivity :
         recyclerView?.adapter = variantListAdapter
     }
 
+    private fun setSortByRecyclerView(recyclerView: RecyclerView?, mList: List<SortBy>) {
+        val sortByListAdapter = SortByListAdapter(this, mList, this)
+        recyclerView?.layoutManager = LinearLayoutManager(this)
+        recyclerView?.adapter = sortByListAdapter
+    }
+
+    @SuppressWarnings("Remove explicit type arguments")
     override fun onEventCallBack(intent: Intent) {
         if (IntentUtils.hasParcel(intent)) {
             if (IntentUtils.getParcel<Category>(intent) is Category) {
@@ -98,30 +142,40 @@ class MainActivity :
                     LayoutInflater.from(this).inflate(R.layout.variant_sheet_dialog, null),
                     product.variants
                 )
-            } else if (IntentUtils.getParcel<Variant>(intent) is Variant){
+            } else if (IntentUtils.getParcel<Variant>(intent) is Variant) {
                 val variant: Variant = IntentUtils.getParcel<Variant>(intent) as Variant
                 Toast.makeText(this, "" + variant.size, Toast.LENGTH_SHORT).show()
                 detail.variant = variant
-                startActivity(IntentUtils.getIntentWithParcel(this, detail, DetailActivity::class.java))
+                startActivity(
+                    IntentUtils.getIntentWithParcel(
+                        this,
+                        detail,
+                        DetailActivity::class.java
+                    )
+                )
+            } else if (IntentUtils.getParcel<SortBy>(intent) is SortBy) {
+                val sortBy: SortBy = IntentUtils.getParcel<SortBy>(intent) as SortBy
+                Toast.makeText(this, "" + sortBy.name, Toast.LENGTH_SHORT).show()
+                setSortBy(sortBy)
             }
         }
     }
 
-    fun showBottomSheetDialog(context: Context, view: View, mList: List<Category>) {
+    private fun showBottomSheetDialog(context: Context, view: View, mList: List<Category>) {
         val bottomSheetDialog = BottomSheetDialog(context)
         bottomSheetDialog.setContentView(view)
         setRecyclerView(view.findViewById(R.id.rv_category_list), mList)
         bottomSheetDialog.show()
     }
 
-    fun showProductDialog(context: Context, view: View, mList: List<Product?>?) {
+    private fun showProductDialog(context: Context, view: View, mList: List<Product?>?) {
         val bottomSheetDialog = BottomSheetDialog(context)
         bottomSheetDialog.setContentView(view)
         setProductRecyclerView(view.findViewById(R.id.rv_category_list), mList)
         bottomSheetDialog.show()
     }
 
-    fun showVariantDialog(context: Context, view: View, mList: List<Variant?>?) {
+    private fun showVariantDialog(context: Context, view: View, mList: List<Variant?>?) {
         val bottomSheetDialog = BottomSheetDialog(context)
         bottomSheetDialog.setContentView(view)
         setVariantRecyclerView(view.findViewById(R.id.rv_category_list), mList)

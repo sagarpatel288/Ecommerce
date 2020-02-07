@@ -18,7 +18,7 @@ data class Ranking(
     var primaryKey: Long = 0,
     @TypeConverters(ProductListTypeConverter::class)
     @SerializedName("products")
-    var products: List<Product?>? = null,
+    var products: List<Product>? = null,
     @SerializedName("ranking")
     var ranking: String? = null // Most ShaRed Products
 ) : Parcelable
