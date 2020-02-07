@@ -39,6 +39,11 @@ open class CategoryListAdapter(private val context: Activity, private var mList:
         }
     }
 
+    fun clearData() {
+        mList = emptyList()
+        notifyDataSetChanged()
+    }
+
     inner class ItemViewHolder(
         val binding: ItemListBinding,
         itemView: View

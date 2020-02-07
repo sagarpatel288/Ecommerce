@@ -19,6 +19,9 @@ interface ProductDao : BaseDao<Product> {
     @Query("select * from Product where id =:id")
     fun getProductById(id: Long): Product
 
+    @Query("select * from Product where id IN(:ids)")
+    fun getProductListByIds(ids: List<Long>): List<Product>
+
     @RawQuery
     fun getProductsOrderBy(query: SupportSQLiteQuery): List<Product>
 

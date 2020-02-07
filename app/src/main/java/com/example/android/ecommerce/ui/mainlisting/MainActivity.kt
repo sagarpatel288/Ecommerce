@@ -37,7 +37,7 @@ class MainActivity :
     }
 
     override fun otherStuffs() {
-        dataBinding?.itemTvSortByValue?.setOnClickListener { _ ->
+        dataBinding?.viewSortBy?.setOnClickListener { _ ->
             showSortByDialog(
                 ViewUtils.getView(
                     this,
@@ -46,7 +46,7 @@ class MainActivity :
             )
         }
         setSortBy(sortBy)
-        setRecyclerView(dataBinding?.rvCategoryList, mutableListOf())
+        setRecyclerView(dataBinding?.rvCategoryList, arrayListOf())
         setObservers()
     }
 
@@ -83,8 +83,11 @@ class MainActivity :
     }
 
     private fun renderListData(mutableCategoryList: List<Category>?) {
-        if (mutableCategoryList != null) {
+        setRecyclerView(dataBinding?.rvCategoryList, mutableCategoryList ?: mutableListOf())
+        if (!mutableCategoryList.isNullOrEmpty()) {
             categoryListAdapter?.setList(mutableCategoryList)
+        } else {
+            categoryListAdapter?.clearData()
         }
     }
 

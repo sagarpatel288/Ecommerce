@@ -36,6 +36,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="@dimen/dim_app_view_space"
+                android:clickable="true"
                 android:layout_alignParentBottom="true"
                 >
 
@@ -44,6 +45,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:maxLines="1"
+                    android:clickable="false"
+                    android:focusable="false"
                     android:text="SORT BY"
                     android:textSize="20sp"
                     android:textStyle="bold"
@@ -58,6 +61,8 @@
                     android:layout_marginTop="@dimen/dim_app_view_space"
                     android:ellipsize="end"
                     android:maxLines="3"
+                    android:clickable="false"
+                    android:focusable="false"
                     android:layout_below="@+id/item_tv_sort_by_title"
                     />
 

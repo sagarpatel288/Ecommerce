@@ -92,32 +92,41 @@ class Repository : KoinComponent {
 
     fun getProductListByViews(): List<Product>? {
         val rankingList = rankingDao.getAllRankings()
+        val idList = ArrayList<Long>()
         rankingList.forEach { rank ->
             if (rank.ranking?.toLowerCase(Locale.getDefault())?.contains("view") == true) {
-                return rank.products
+                if (!rank.products.isNullOrEmpty()) {
+                    rank.products?.forEach { product -> idList.add(product.id)}
+                }
             }
         }
-        return null
+        return productDao.getProductListByIds(idList)
     }
 
     fun getProductListByOrder(): List<Product>? {
         val rankingList = rankingDao.getAllRankings()
+        val idList = ArrayList<Long>()
         rankingList.forEach { rank ->
             if (rank.ranking?.toLowerCase(Locale.getDefault())?.contains("order") == true) {
-                return rank.products
+                if (!rank.products.isNullOrEmpty()) {
+                    rank.products?.forEach { product -> idList.add(product.id)}
+                }
             }
         }
-        return null
+        return productDao.getProductListByIds(idList)
     }
 
     fun getProductListBySharings(): List<Product>? {
         val rankingList = rankingDao.getAllRankings()
+        val idList = ArrayList<Long>()
         rankingList.forEach { rank ->
             if (rank.ranking?.toLowerCase(Locale.getDefault())?.contains("share") == true) {
-                return rank.products
+                if (!rank.products.isNullOrEmpty()) {
+                    rank.products?.forEach { product -> idList.add(product.id)}
+                }
             }
         }
-        return null
+        return productDao.getProductListByIds(idList)
     }
 }
 
