@@ -11,76 +11,82 @@
 
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="@dimen/dim_app_view_space"
+        android:fillViewport="true"
         >
 
-        <TextView
-            android:id="@+id/item_tv_category_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:maxLines="1"
-            android:text="CATEGORY"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="@dimen/dim_app_view_space">
 
-        <TextView
-            android:id="@+id/item_tv_category_value"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dim_app_view_space"
-            android:ellipsize="end"
-            android:maxLines="3"
-            app:layout_constraintLeft_toLeftOf="@id/item_tv_category_title"
-            app:layout_constraintStart_toStartOf="@id/item_tv_category_title"
-            app:layout_constraintTop_toBottomOf="@+id/item_tv_category_title" />
+            <TextView
+                android:id="@+id/item_tv_category_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:maxLines="1"
+                android:text="CATEGORY"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/item_tv_product_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dim_app_view_space"
-            android:maxLines="1"
-            android:text="PRODUCT"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/item_tv_category_value" />
+            <TextView
+                android:id="@+id/item_tv_category_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dim_app_view_space"
+                android:ellipsize="end"
+                android:maxLines="3"
+                app:layout_constraintLeft_toLeftOf="@id/item_tv_category_title"
+                app:layout_constraintStart_toStartOf="@id/item_tv_category_title"
+                app:layout_constraintTop_toBottomOf="@+id/item_tv_category_title" />
 
-        <TextView
-            android:id="@+id/item_tv_product_value"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dim_app_view_space"
-            android:ellipsize="end"
-            android:maxLines="3"
-            app:layout_constraintLeft_toLeftOf="@id/item_tv_product_title"
-            app:layout_constraintStart_toStartOf="@id/item_tv_product_title"
-            app:layout_constraintTop_toBottomOf="@+id/item_tv_product_title" />
+            <TextView
+                android:id="@+id/item_tv_product_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dim_app_view_space"
+                android:maxLines="1"
+                android:text="PRODUCT"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/item_tv_category_value" />
 
-        <FrameLayout
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/item_tv_product_value">
+            <TextView
+                android:id="@+id/item_tv_product_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dim_app_view_space"
+                android:ellipsize="end"
+                android:maxLines="3"
+                app:layout_constraintLeft_toLeftOf="@id/item_tv_product_title"
+                app:layout_constraintStart_toStartOf="@id/item_tv_product_title"
+                app:layout_constraintTop_toBottomOf="@+id/item_tv_product_title" />
 
-            <include
-                android:id="@+id/include_variant"
-                layout="@layout/item_variant_list">
+            <FrameLayout
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/item_tv_product_value">
 
-            </include>
+                <include
+                    android:id="@+id/include_variant"
+                    layout="@layout/item_variant_list">
 
-        </FrameLayout>
+                </include>
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            </FrameLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
 </layout>
