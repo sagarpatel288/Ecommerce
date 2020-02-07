@@ -9,7 +9,7 @@ interface BaseDao<T> {
     fun insert(vararg t: T)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertList(mutableList: MutableList<T>)
+    fun insertList(list: List<T?>?)
 
     @Update
     fun update(vararg t: T): Int

@@ -17,6 +17,11 @@ class CategoryListAdapter(private val context: Activity, private var mList: Muta
 
     val onEventCallback: Callbacks.Callback? = _onEventCallback
 
+    fun setList(mList: ArrayList<Category>) {
+        this.mList = mList
+        notifyDataSetChanged()
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val itemView =
             LayoutInflater.from(parent.context).inflate(R.layout.item_list, parent, false)
