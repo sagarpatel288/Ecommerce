@@ -1,6 +1,7 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
+//To enable the kotlin annotation processor tool apply plugin: ‘kotlin-kapt’ to the top of the app gradle file
 apply plugin: "kotlin-kapt"
 
 android {
