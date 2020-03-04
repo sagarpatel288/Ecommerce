@@ -13,8 +13,18 @@ android {
         targetSdkVersion 29
         versionCode 1
         versionName "1.0"
+        multiDexEnabled true
         vectorDrawables.useSupportLibrary = true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    dexOptions {
+        // incremental is obsolete now
+//        incremental true
+        // https://dev.to/joshuadeguzman/speed-up-your-android-project-s-gradle-builds-1366
+        // Disable preDexLibraries if using for clean CI build
+        preDexLibraries true
+        javaMaxHeapSize "12g"
     }
 
     dataBinding {
@@ -22,11 +32,40 @@ android {
     }
 
     buildTypes {
+        debug {
+            try {
+                // https://developer.android.com/studio/build/optimize-your-build#disable_crunching
+                // https://blog.mindorks.com/speed-up-gradle-build-for-android-to-save-your-time
+                // Disables PNG crunching on DEBUG build type
+                crunchPngs false // Enabled by default for RELEASE build type
+                minifyEnabled false
+                buildConfigField "String", "API_URL", "\"https://api.openweathermap.org/data/2.5/\""
+                buildConfigField "String", "API_KEY", openweathermap_key
+                debuggable true
+
+                // https://dev.to/joshuadeguzman/speed-up-your-android-project-s-gradle-builds-1366?signin=true
+                /*FirebasePerformance {
+                    instrumentationEnabled false
+                }*/
+            } catch (e) {
+                // add gradle.properties file with the following property:
+                // openweathermap_key = "YOUR_API_KEY"
+                throw e
+            }
+        }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
+    // https://blog.mindorks.com/speed-up-gradle-build-for-android-to-save-your-time
+    // Turn off multiple APK Build for all other build types except release build type
+    if (project.hasProperty('devBuild')) {
+        splits.abi.enable = false
+        splits.density.enable = false
+    }
+
     sourceSets { main { assets.srcDirs = ['src/main/assets', 'src/main/assets/'] } }
 }
 
@@ -36,7 +75,11 @@ dependencies {
     def koin_version = "2.0.1"
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+
+    //Support
     implementation 'androidx.appcompat:appcompat:1.1.0'
+    implementation 'com.android.support:multidex:1.0.3'
+
     implementation 'androidx.core:core-ktx:1.2.0'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
 
